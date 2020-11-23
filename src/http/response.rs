@@ -14,12 +14,12 @@ impl Response {
         Response { status_code, body }
     }
 
-    pub fn send(&self, stream: &mut TcpStream) -> IoResult<()> {
+    pub fn send(&self, stream: &mut dyn Write) -> IoResult<()> {
         write!(
             stream,
             "HTTP/1.1 {} {}\n\r\n\r{}",
             self.status_code,
-            self.status_code.reason_phase(),
+            self.status_code.reason_phrase(),
             &self.body.as_ref().unwrap_or(&String::from(""))
         )
     }
